@@ -16,5 +16,3 @@ def get_product(product_id: str):
         raise HTTPException(status_code=404, detail="Товар не знайдено")
     return product
 
-if __name__ == '__main__':
-    app.run(port=5001, debug=True)

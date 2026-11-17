@@ -13,7 +13,7 @@ def info():
     return jsonify({
         "lab": 4,
         "variant": 5,
-        "message": "Web application is running in Docker"
+        "message": "Automatic Jenkins build works"
     })
 
 

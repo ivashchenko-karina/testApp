@@ -13,7 +13,7 @@ def info():
     return jsonify({
         "lab": 4,
         "variant": 5,
-        "message": "Automatic Jenkins build works"
+        "message": "GitHub webhook works"
     })
 
 

@@ -1,0 +1,82 @@
+version: "3.8"
+
+services:
+  catalog:
+    image: minishop-catalog:1.0
+    ports:
+      - target: 8001
+        published: 8001
+        protocol: tcp
+        mode: ingress
+    networks:
+      - minishop-overlay
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.10"
+          memory: 64M
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8001/health', timeout=2)"
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+  order:
+    image: minishop-order:1.0
+    environment:
+      CATALOG_URL: http://catalog:8001
+    ports:
+      - target: 8002
+        published: 8002
+        protocol: tcp
+        mode: ingress
+    networks:
+      - minishop-overlay
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.10"
+          memory: 64M
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:8002/health', timeout=2)"
+      interval: 15s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  minishop-overlay:
+    external: true

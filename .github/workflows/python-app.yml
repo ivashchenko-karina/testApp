@@ -36,7 +36,7 @@ jobs:
       - name: Run tests
         run: python -m unittest discover -s Lab7-8 -p "app_tests.py"
 
-            - name: Setup Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.0.1

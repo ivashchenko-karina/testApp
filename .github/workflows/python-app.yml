@@ -50,6 +50,23 @@ jobs:
       - name: Terraform Init
         run: terraform init
         working-directory: Lab7-8/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Import existing security group if needed
+        run: terraform state show aws_security_group.web_app >/dev/null 2>&1 || terraform import aws_security_group.web_app sg-0be79c766be75a3a6
+        working-directory: Lab7-8/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Import existing EC2 instance if needed
+        run: terraform state show aws_instance.webapp_instance >/dev/null 2>&1 || terraform import aws_instance.webapp_instance i-0365ba115464ca999
+        working-directory: Lab7-8/terraform
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Validate
         run: terraform validate

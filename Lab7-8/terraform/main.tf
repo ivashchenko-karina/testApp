@@ -1,9 +1,18 @@
 terraform {
+  required_version = ">= 0.13.0"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
     }
+  }
+
+  backend "s3" {
+    bucket         = "karina-lab7-8-tf-state-462025067942"
+    key            = "terraform.tfstate"
+    region         = "eu-north-1"
+    dynamodb_table = "lab-my-tf-lockid"
   }
 }
 
